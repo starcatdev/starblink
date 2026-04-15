@@ -27,7 +27,7 @@ const AMOUNTS = [0.1, 0.5, 1];
 const PUMP_PROGRAM = "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P";
 const GITHUB_URL =
   process.env.NEXT_PUBLIC_GITHUB_URL ||
-  "https://github.com/pumpblinks/pumpblinks";
+  "https://github.com/starcatdev/starblink";
 
 // ===== MAIN COMPONENT (wrapped in wallet provider) =====
 export default function BuyClient(props: Props) {
