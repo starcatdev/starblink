@@ -13,7 +13,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const token = await getTokenInfo(params.mint);
   const title = token
-    ? `$${token.symbol} — Buy via Pump.fun`
+    ? `$${token.symbol} — Buy via Starblink`
     : "StarBlink";
   const description = token
     ? `${token.name} · ${token.isGraduated ? "Graduated" : `${token.bondingCurveProgress.toFixed(0)}%`} · Buy now`

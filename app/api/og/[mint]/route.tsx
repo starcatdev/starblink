@@ -100,7 +100,7 @@ export async function GET(
           )}
 
           <div style={{ position: "absolute", bottom: 30, left: 80, right: 80, display: "flex", justifyContent: "space-between", fontSize: 16, color: "#44445a" }}>
-            <span>via Pump.fun</span>
+            <span>via Starblink</span>
             <span>starblink.fun</span>
           </div>
         </div>
