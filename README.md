@@ -1,4 +1,4 @@
-# PumpBlinks
+# StarBlink
 
 Open-source protocol for buying any Pump.fun token via a shareable link with built-in affiliate tracking.
 
@@ -6,9 +6,9 @@ Open-source protocol for buying any Pump.fun token via a shareable link with bui
 
 ## How it works
 
-1. Caller goes to `pumpblinks.xyz/share`, pastes a token mint, gets a link with their wallet as referrer
+1. Caller goes to `starblink.fun/share`, pastes a token mint, gets a link with their wallet as referrer
 2. Shares the link on X, Telegram, Discord
-3. Buyer clicks → connects wallet (Phantom/Solflare/Backpack) → reviews transaction → signs → done
+3. Buyer clicks → connects wallet (Phantom/Solflare) → reviews transaction → signs → done
 4. Caller earns 0.2% on every purchase, on-chain, in their wallet
 
 ## Trust model
@@ -32,7 +32,7 @@ No referrer in URL → platform gets 0.5%.
 ## Stack
 
 - Next.js 14+ / TypeScript / Vercel
-- Solana Wallet Adapter (Phantom, Solflare, Backpack)
+- Solana Wallet Adapter (Phantom, Solflare)
 - Jupiter Swap API (auto-routes through Pump.fun bonding curve or PumpSwap)
 - Helius RPC (free tier)
 - next/og for Twitter Card images
@@ -40,8 +40,8 @@ No referrer in URL → platform gets 0.5%.
 ## Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pumpblinks.git
-cd pumpblinks
+git clone https://github.com/starcatdev/starblink.git
+cd starblink
 npm install
 cp .env.example .env.local
 # Edit .env.local: add Helius API key + platform wallet

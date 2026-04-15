@@ -28,4 +28,4 @@ export const PUMP_PROGRAM_ID = "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P";
 // ===== APP =====
 export const APP_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 export const GITHUB_URL =
-  process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/pumpblinks/pumpblinks";
+  process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/starcatdev/starblink";
