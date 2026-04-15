@@ -1,10 +1,33 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { VersionedTransaction } from "@solana/web3.js";
 import AppWalletProvider from "@/components/WalletProvider";
+
+// Detect if running on mobile browser (not in wallet in-app browser)
+function useIsMobileWeb(): boolean {
+  const [isMobileWeb, setIsMobileWeb] = useState(false);
+
+  useEffect(() => {
+    const ua = navigator.userAgent.toLowerCase();
+    const isMobile = /iphone|ipad|ipod|android/.test(ua);
+    // Check if we're NOT inside Phantom's in-app browser
+    const isInPhantom = /phantom/i.test(ua);
+    const isInSolflare = /solflare/i.test(ua);
+    setIsMobileWeb(isMobile && !isInPhantom && !isInSolflare);
+  }, []);
+
+  return isMobileWeb;
+}
+
+// Build Phantom deep link to open current page in Phantom's browser
+function getPhantomBrowseLink(): string {
+  if (typeof window === "undefined") return "";
+  const currentUrl = encodeURIComponent(window.location.href);
+  return `https://phantom.app/ul/browse/${currentUrl}?ref=${encodeURIComponent(window.location.origin)}`;
+}
 
 interface TokenData {
   mint: string;
@@ -54,12 +77,15 @@ interface SimData {
 function BuyWidget({ mint, referrer, token }: Props) {
   const { publicKey, signTransaction, connected } = useWallet();
   const { connection } = useConnection();
+  const isMobileWeb = useIsMobileWeb();
 
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [simData, setSimData] = useState<SimData | null>(null);
   const [txSignature, setTxSignature] = useState("");
+
+  const phantomLink = useMemo(() => getPhantomBrowseLink(), []);
 
   // Reset simulation if wallet changes or disconnects
   const walletKey = publicKey?.toBase58() || null;
@@ -238,9 +264,20 @@ function BuyWidget({ mint, referrer, token }: Props) {
             <p style={{ color: "#8b8b9e", fontSize: 13, margin: "0 0 16px" }}>
               Connect your wallet to buy
             </p>
-            <div style={S.walletBtnWrap}>
-              <WalletMultiButton />
-            </div>
+            {isMobileWeb ? (
+              <div style={S.mobileWalletWrap}>
+                <a href={phantomLink} style={S.phantomBtn}>
+                  Open in Phantom
+                </a>
+                <p style={{ color: "#555", fontSize: 11, marginTop: 10, textAlign: "center" }}>
+                  Opens this page in Phantom&apos;s browser
+                </p>
+              </div>
+            ) : (
+              <div style={S.walletBtnWrap}>
+                <WalletMultiButton />
+              </div>
+            )}
           </>
         )}
 
@@ -447,6 +484,23 @@ const S: Record<string, React.CSSProperties> = {
     display: "flex",
     justifyContent: "center",
     marginBottom: 20,
+  },
+  mobileWalletWrap: {
+    marginBottom: 20,
+  },
+  phantomBtn: {
+    display: "block",
+    width: "100%",
+    padding: "14px 0",
+    fontSize: 16,
+    fontWeight: 700,
+    color: "#fff",
+    backgroundColor: "#ab9ff2",
+    border: "none",
+    borderRadius: 10,
+    textAlign: "center" as const,
+    textDecoration: "none",
+    cursor: "pointer",
   },
   // Amount buttons
   amountRow: {

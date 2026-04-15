@@ -31,12 +31,17 @@ const AppWalletProvider: FC<Props> = ({ children }) => {
     []
   );
 
+  // Type assertions needed due to React 18 + wallet-adapter type mismatch
+  // See: https://github.com/solana-labs/wallet-adapter/issues/855
+  const ConnProvider = ConnectionProvider as any;
+  const WalletProv = WalletProvider as any;
+
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
+    <ConnProvider endpoint={endpoint}>
+      <WalletProv wallets={wallets} autoConnect>
         <WalletModalProvider>{children}</WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+      </WalletProv>
+    </ConnProvider>
   );
 };
 
